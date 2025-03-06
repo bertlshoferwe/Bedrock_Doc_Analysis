@@ -8,14 +8,16 @@ module "document_analysis_lambda" {
   function_name = "document-analysis"
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
+  memory_size   = 512
   timeout       = 30
+  role          = aws_iam_role.lambda_execution_role.arn
 
   source_path = "${path.module}/lambda_code"
 
   environment_variables = {
-    S3_BUCKET     = module.document_storage.s3_bucket_id
-    BEDROCK_MODEL = "amazon.titan-text-express-v1"
-     DYNAMODB_TABLE = module.document_analysis_dynamodb.dynamodb_table_id
+    S3_BUCKET      = module.document_storage.s3_bucket_id
+    BEDROCK_MODEL  = "amazon.titan-text-express-v1"
+    DYNAMODB_TABLE = module.document_analysis_dynamodb.dynamodb_table_id
   }
 
   attach_policy_statements = true
@@ -30,7 +32,7 @@ module "document_analysis_lambda" {
       actions   = ["bedrock:InvokeModel"]
       resources = ["*"]
     },
-     {
+    {
       effect    = "Allow"
       actions   = ["dynamodb:PutItem"]
       resources = [module.document_analysis_dynamodb.dynamodb_table_arn]
