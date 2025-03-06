@@ -28,6 +28,6 @@ function App({ signOut, user }) {
       <button onClick={signOut}>Sign Out</button>
     </div>
   );
-}
+} 
 
 export default withAuthenticator(App);
