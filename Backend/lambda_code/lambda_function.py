@@ -47,7 +47,7 @@ def lambda_handler(event, context):
 
     print("Analysis Result:", analysis_result)
 
-     return {
+    return {
         "statusCode": 200,
         "body": json.dumps({"document_id": document_id, "analysis_result": analysis_result}),
     }
